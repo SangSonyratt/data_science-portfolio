@@ -1,0 +1,175 @@
+1. Write a R code to Generate 6X6 matrix (A) using the random numbers between 1 to 100 & generate another 6x6 matrix (B) using random numbers between 500 to 600.
+(20 Marks)
+  a. Find the range of matrices A and B.
+  b. Find the max value from each row of the matrices A and B.
+  c. Find the diagonal values of matrices A&B.
+  d. Multiply matrices A and B
+  e. Replace the 4th row of Matrix A with diagonal values of matrix B
+  f. Multiply matrices A & B and store the values on X.
+  g. Divide the matrix A with matrix B.
+
+```{r}
+n<-c(1:100)
+h<-c(500:600)
+A_matric <- matrix(n, 6, 6)
+A_matric
+B_matric <- matrix(h, 6, 6)
+B_matric
+
+# a.Find the range of matrices A and B.
+range(A_matric)
+range(B_matric)
+
+# b.Find the max value from each row of the matrices A and B.
+apply(A_matric,1,max)
+apply(B_matric,1,max)
+
+# c. Find the diagonal values of matrices A&B.
+diag(A_matric)
+diag(B_matric)
+
+# d. Multiply matrices A and B
+A_matric %*% B_matric
+multip
+# e. Replace the 4th row of Matrix A with diagonal values of matrix B
+A_matric[4, ] <- diag(t(B_matric))
+A_matric
+
+# f. Multiply matrices A & B and store the values on X.
+X <- A_matric %*% B_matric
+X
+# g. Divide the matrix A with matrix B.
+A_matric/B_matric
+```
+
+2. Create a table using dataframe/tibble with the following categories(a to f) (10 marks)
+  First name, 
+  Second Name, 
+  Age,
+  Occupation, 
+  Place,
+  Random numbers( between 1 to 10)
+And input at least 10 samples(observation) and do the following
+  Extract the last column (f)
+  Find the sum, mean and length of the extracted column
+
+
+```{r}
+fname<-c("sang", "hann", "seng", "pic", "ask", "know", "help", "hello", "hi", "llala")
+sname<-c("sonyratt", "manich", "rathanak", "me", "you", "haha", "jeje", "nyra", "nara", "lelelola")
+age<-c(12,13,10,30,20,30,5,49,12,39)
+occupation<-c("docter", "software engineer", "seller", "manager", "teacher", "deliver", "chef", "ower", "dentist", "preparator")
+place<-c("siem reap", "kompot", "takeo", "battombong", "preveng", "bonteay meanjey", "preas vihar", "phnom penh", "kompong speu", "katmav")
+num<-(1:10)
+data<-data.frame(a=fname, b=sname, c=age, d=occupation, e=place, f=num)
+
+# Extract the last column (f)
+last_colum<-data$f
+last_colum
+
+#Find the sum, mean and length of the extracted column
+#sum
+sum=0
+for(i in last_colum) {
+  sum = sum + i
+}
+sum
+
+#mean
+mean<-mean(last_colum)
+mean
+
+#length
+length<-length(last_colum)
+length
+
+```
+
+
+
+3. Create a .txt file (Minimum : 150 words) with the latest news (In English) in cambodia from the official news agency’s website(Note: Include the reference link) and do the following (20 Marks)
+  a. Read the .txt file
+  b. Perform the Tokenization & count the words
+  c. Identify the most repeated word and replace that word with “KIT”
+  d. Perform the Sentiment analysis
+  e. Plot the graph between “words count” and “words” using geom_col()
+    e.1. X-axis title =“Number of words”, Size=10, Bold, Text in Blue color, Center, space between graph and title = 20.
+	  e.2. Y-axis title =“List of words”, Size=10, Bold, Text in Red color, Center, space between graph and title = 20.
+	  e.3. Graph title =”Text Mining using R”,Size = 25, Bold, Center, Text in Yellow color, space between graph and title = 25.
+
+
+```{r}
+library(tokenizers)
+# a. Read the .txt file
+# text from url: https://www.phnompenhpost.com/national/mekong-levels-set-drop-during-power-grid-work
+data <- read.delim("C:/Users/sang sonyratt/Downloads/3.txt")
+data
+
+#b. Perform the Tokenization count the words
+words <- paste0(data)
+words_tokens <- tokenize_words(words)
+count <- count_words(words)
+count
+
+#c. Identify the most repeated word and replace that word with “KIT”
+#Identify the most repeated word
+most_repeated_words <- names(table(words_tokens))[as.vector(table(words_tokens))==max(table(words_tokens))]
+most_repeated_words_count <- max(table(words_tokens))
+most_repeated_words
+most_repeated_words_count
+
+#replace that word with “KIT”
+subs <- gsub(most_repeated_words, "KIT", words_tokens)
+subs
+
+#d. Perform the Sentiment analysis
+library(sentimentr)
+sentiment_analysis <- sentiment(words)
+sentiment_analysis
+
+#e. Plot the graph between “words count” and “words” using geom_col()
+  #e.1. X-axis title =“Number of words”, Size=10, Bold, Text in Blue color, Center, space between graph and title = 20.
+  #e.2. Y-axis title =“List of words”, Size=10, Bold, Text in Red color, Center, space between graph and title = 20.
+  #e.3. Graph title =”Text Mining using R”,Size = 25, Bold, Center, Text in Yellow color, space between graph and title = 25.
+
+ggplot(aes(words_tokens, count)) +
+         geom_col() +
+         them(
+           axis.title.x=element_text(size=20, color="blue", face="bold", hjust=0.5, margin=margin(t=20),
+           axis.title.y=element_text(size=20, color="red", face="bold", hjust=0.5, margin=margin(r=20),
+          plot.title=element_text(size=25, color="yellow", face="bold", hjust=0.5, margin=margin(b=20)))
+         ))
+
+```
+
+4. Find the assigned Dataset from the list below and perform the following (20 Marks)
+  a. Import and Clean the dataset.
+  b. Find the x and y variables(axis) from the assigned dataset and give the reason for selecting the x and y axis. 
+  c. Plot the graph using geom_col() and perform the linear model in statistics.
+  d. Perform the facet with the available columns(Choose the any two variables from the columns)
+  e. Use the theme layer to do the following (Note: Based on dataset, name the x and y axis & graph)
+    e.1. x-axis title =“________”, Size=10, Bold, Text in Green color, Center, space between graph and title = 20.
+	  e.2. y-axis title =“________”, Size=10, Bold, Text in Yellow color, Center, space between graph and title = 20.
+	  e.3. Graph title =”_________”,Size = 25, Bold, Center, Text in Blue color, space between graph and title = 25.
+
+### Answer: 
+b. I choose to state as x and forecast_prob for y from the assigned dataset because we plot this two varaibles we can see the data of forecast probability of each State from the given dataset
+
+```{r}
+dataset <- read_csv("C:/Users/sang sonyratt/Downloads/data/forecast-methodology/historical-senate-predictions.csv")
+dataset
+is.na(dataset)
+
+ggplot(dataset, aes(state, forecast_prob)) +
+  geom_col() +
+  geom_smooth(method="lm") +
+  facet_grid(result ~ year) +
+  xlab("State") + 
+  ylab("Forecast probability") +
+  ggtitle("historical-senate-predictions") +
+  theme(
+    axis.title.x = element_text(color = "green", size = 10, face = "bold", hjust = 0.5, margin = margin(t=20)),
+    axis.title.y = element_text(color = "yellow", size = 10, face = "bold", hjust = 0.5, margin = margin(r=20)),
+    plot.title = element_text(color = "blue", size = 25, face = "bold", hjust = 0.5, margin = margin(b=25))
+  ) + ggsave(filename="sangsonyratt.png", units="cm", width=25, height=25)
+```
